@@ -1,0 +1,19 @@
+.avatar_img {
+    height: 75px;
+    width: 100px;
+}
+
+.user_avatar {
+    min-height: 100px;
+    text-align: center;
+}
+
+.my_text {
+    background-color: #289F37;
+    color: #FFF;
+}
+
+.other_text {
+    background-color: #D17432;
+    color: #FFF;
+}

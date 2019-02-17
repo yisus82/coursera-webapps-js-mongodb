@@ -1,0 +1,127 @@
+<head>
+    <title>minstant</title>
+</head>
+<body>
+</body>
+<!-- this is the main template used by iron:router to build the page -->
+<template name="ApplicationLayout">
+    {{> yield "header"}}
+
+    <div class="container">
+        {{> yield "main"}}
+    </div>
+</template>
+<!-- top level template for the nav bar -->
+<template name="navbar">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    Minstant!
+                </a>
+            </div>
+            <div class="nav navbar-nav">
+                {{> loginButtons}}
+            </div>
+        </div>
+    </nav>
+</template>
+<!-- Top level template for the lobby page -->
+<template name="lobby_page">
+    {{#if currentUser}}
+    {{> available_user_list}}
+    {{else}}
+    <div class="jumbotron">
+        <h1>Welcome to mInstant!</h1>
+        <p>You have to login to chat with your friends.</p>
+    </div>
+    {{/if}}
+</template>
+<!-- display a list of users -->
+<template name="available_user_list">
+    <h2>Choose someone to chat with:</h2>
+    <div class="row">
+        {{#each users}}
+        {{> available_user}}
+        {{/each}}
+    </div>
+</template>
+<!-- display an individual user -->
+<template name="available_user">
+    <div class="col-md-2">
+        <div class="user_avatar">
+            {{#if isMyUser _id}}
+            <div class="bg-success">
+                {{getUsername _id}} (YOU)
+                <br />
+                <img src="{{profile.avatar}}" class="avatar_img">
+            </div>
+            {{else}}
+            <a href="/chat/{{_id}}">
+                {{getUsername _id}}
+                <br />
+                <img src="{{profile.avatar}}" class="avatar_img">
+            </a>
+            {{/if}}
+        </div>
+    </div>
+</template>
+
+<!-- Top level template for the chat page -->
+<template name="chat_page">
+    <h2>Type in the box below to send a message!</h2>
+    <h4>You can use emoticons in your texts by typing its name, e.g. :smile:</h4>
+    <h4>If you don't know/remember an emoticon code, you can click in the 'Emoji codes' button to open a new page with all of the codes.</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-lg">
+                {{#each messages}}
+                {{> chat_message}}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form class="js-send-chat">
+                <input class="input" type="text" name="chat" placeholder="type a message here...">
+                <button class="btn btn-success">Send</button>
+                <a href="http://emoji.codes/" type="button" class="btn btn-info" target="_blank">Emoji codes</a>
+            </form>
+        </div>
+    </div>
+</template>
+<!-- simple template that displays a message -->
+<template name="chat_message">
+    {{#if isMyUser user}}
+    <div class="media my_text" data-ng-if="showDish">
+        <div class="media-left media-middle">
+            <a href="#">
+                <img class="media-object img-thumbnail img-circle avatar_img" src="{{getAvatar user}}" alt="{{getUsername user}}">
+            </a>
+        </div>
+        <div class="media-body">
+            <h2 class="media-heading">
+                {{getUsername user}} (YOU)
+            </h2>
+            <p>{{> emojione text}}</p>
+        </div>
+    </div>
+    {{else}}
+    <div class="media other_text" data-ng-if="showDish">
+        <div class="media-left media-middle">
+            <a href="#">
+                <img class="media-object img-thumbnail img-circle avatar_img" src="{{getAvatar user}}" alt="{{getUsername user}}">
+            </a>
+        </div>
+        <div class="media-body">
+            <h2 class="media-heading">
+                {{getUsername user}}
+            </h2>
+            <p>{{> emojione text}}</p>
+        </div>
+    </div>
+    {{/if}}
+    <br>
+</template>
+
